@@ -23,7 +23,7 @@ python-semantic-release = "^7.19.1"
 
 [tool.semantic_release]
 branch = "master"
-build_command = "pip install poetry && poetry build"
+build_command = "poetry build"
 upload_to_pypi = true
 upload_to_release = true
 version_toml = ["pyproject.toml:tool.poetry.version"]
