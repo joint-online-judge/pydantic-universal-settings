@@ -7,6 +7,7 @@ from typing import Any, Dict, Generic, Iterable, List, Optional, Type, TypeVar, 
 
 from psutil import pid_exists
 from pydantic import BaseModel, BaseSettings as PydanticBaseSettings, root_validator
+
 from pydantic_universal_settings import logger
 
 _global_settings_models_dict: Dict[str, Type[BaseModel]] = {}
@@ -73,7 +74,7 @@ class CLIMixin(BaseModel):
     def _load() -> Dict[str, Any]:
         return {}
 
-    @root_validator(allow_reuse=True)
+    @root_validator(pre=True, allow_reuse=True)
     def _inject_cli(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         from pydantic_universal_settings.cli import cli_settings
 
@@ -84,7 +85,11 @@ class CLIMixin(BaseModel):
         else:
             _cli_settings = cls._load()
         for key, value in _cli_settings.items():
-            if key in values and not key.startswith("__") and value is not None:
+            if (
+                key in cls.__fields__.keys()
+                and not key.startswith("__")
+                and value is not None
+            ):
                 values[key] = value
         return values
 
@@ -143,7 +148,7 @@ def generate_all_settings(
         ),
         {},
     )
-    return new_class  # type: ignore
+    return new_class
 
 
 class SettingsProxy(Generic[T]):
@@ -160,7 +165,7 @@ class SettingsProxy(Generic[T]):
     def __str__(self) -> str:
         return str(self._settings)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return repr(self._settings)
 
 
@@ -177,5 +182,5 @@ def init_settings(
 settings: Union[BaseSettings, SettingsProxy[Any]] = SettingsProxy()
 
 
-def get_settings_proxy():
+def get_settings_proxy() -> Union[BaseSettings, SettingsProxy[Any]]:
     return settings
