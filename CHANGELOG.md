@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.5 (2021-12-12)
+### Fix
+* Support arbitrary number of parents for CLIWatchMixin ([`252770a`](https://github.com/joint-online-judge/pydantic-universal-settings/commit/252770aabc7cd7964c023dcacb390195cc52389f))
+
 ## v0.1.4 (2021-12-12)
 ### Fix
 * CLIWatchMixin filename error ([`a1c6cab`](https://github.com/joint-online-judge/pydantic-universal-settings/commit/a1c6cab1c2a2ce0b36823a8aa97b70afbe2f45a8))
