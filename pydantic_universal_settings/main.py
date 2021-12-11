@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, Generic, Iterable, List, Optional, Type, TypeVar, Union
 
-from psutil import pid_exists
+from psutil import Process, pid_exists
 from pydantic import BaseModel, BaseSettings as PydanticBaseSettings, root_validator
 
 from pydantic_universal_settings import logger
@@ -119,14 +119,18 @@ class CLIWatchMixin(CLIMixin):
     @staticmethod
     def _load() -> Dict[str, Any]:
         tempdir = Path(tempfile.gettempdir()) / "pydantic_universal_settings"
-        file_path = tempdir / f"{os.getppid()}.settings.json"
-        try:
-            with open(file_path) as fp:
-                data = json.load(fp)
-            logger.info("Load command line options from {}.", file_path)
-            return data
-        except:  # noqa
-            return {}
+        for process in Process(os.getpid()).parents():
+            file_path = tempdir / f"{process.pid}.settings.json"
+            if not file_path.exists():
+                continue
+            try:
+                with open(file_path) as fp:
+                    data = json.load(fp)
+                logger.info("Load command line options from {}.", file_path)
+                return data
+            except:  # noqa
+                return {}
+        return {}
 
 
 def generate_all_settings(
