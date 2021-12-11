@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.4 (2021-12-12)
+### Fix
+* CLIWatchMixin filename error ([`a1c6cab`](https://github.com/joint-online-judge/pydantic-universal-settings/commit/a1c6cab1c2a2ce0b36823a8aa97b70afbe2f45a8))
+
 ## v0.1.3 (2021-12-11)
 ### Fix
 * Ass CLIWatchMixin in __init__.py ([`9284c17`](https://github.com/joint-online-judge/pydantic-universal-settings/commit/9284c1782086b27427199fa17f72944ef83f0c17))
