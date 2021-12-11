@@ -101,7 +101,7 @@ class CLIWatchMixin(CLIMixin):
     def _save(cli_settings: Dict[str, Any]) -> None:
         if len(cli_settings) == 0:
             return
-        tempdir = Path(tempfile.gettempdir()) / "fastapi_rest_framework"
+        tempdir = Path(tempfile.gettempdir()) / "pydantic_universal_settings"
         tempdir.mkdir(exist_ok=True)
         # delete previous settings files if the process doesn't exist
         for file in tempdir.glob("*.settings.json"):
@@ -119,7 +119,7 @@ class CLIWatchMixin(CLIMixin):
     @staticmethod
     def _load() -> Dict[str, Any]:
         tempdir = Path(tempfile.gettempdir()) / "pydantic_universal_settings"
-        file_path = tempdir / f"{os.getppid()}.cli.json"
+        file_path = tempdir / f"{os.getppid()}.settings.json"
         try:
             with open(file_path) as fp:
                 data = json.load(fp)

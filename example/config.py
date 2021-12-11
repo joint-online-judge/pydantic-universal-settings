@@ -1,11 +1,11 @@
 from typing import Type, Union
 
 from pydantic_universal_settings import (
-    add_settings,
     BaseSettings,
-    generate_all_settings,
+    CLIWatchMixin,
     EnvFileMixin,
-    CLIMixin,
+    add_settings,
+    generate_all_settings,
     get_settings_proxy,
 )
 
@@ -14,20 +14,16 @@ from pydantic_universal_settings import (
 class BaseConfig(BaseSettings):
     debug: bool = False
     host: str = "localhost"
-    port: int = 9000
+    port: int
 
 
 GeneratedSettings: Type[Union[BaseConfig]] = generate_all_settings(
-    mixins=[EnvFileMixin, CLIMixin]
+    mixins=[EnvFileMixin, CLIWatchMixin]
 )
 
 
-class AllSettings(GeneratedSettings):
+class AllSettings(GeneratedSettings):  # type: ignore
     pass
 
 
-settings: AllSettings = get_settings_proxy()
-
-
-
-
+settings: AllSettings = get_settings_proxy()  # type: ignore
